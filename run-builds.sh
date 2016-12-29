@@ -7,7 +7,7 @@ docker pull "$image"
 for i in $(seq 1 ${LOCAL_TRAVIS_MAX_BUILDS:-10})
 do
     set +e
-    travis compile "1.$i" 2>compile-error.txt | \
+    travis compile "1.$i" 2>/tmp/compile-error.txt | \
         sed '/travis_fold start git\.checkout/,/travis_fold end git\.checkout/d' | \
         sed '/\.gitmodules/,/^fi/d' | \
         sed '/^cd */d' | \
@@ -24,7 +24,7 @@ do
     set -e
     if [ "$status" -gt 0 ]
     then
-        if grep -q "undefined method \`config' for nil:NilClass" compile-error.txt 
+        if grep -q "undefined method \`config' for nil:NilClass" /tmp/compile-error.txt
         then
             status=0
         fi
