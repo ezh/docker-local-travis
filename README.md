@@ -1,5 +1,9 @@
 # ferhai/local-travis Docker image
 
+**Ignore all of this. travis-build doesn’t work the way I thought it
+did, it will actually just run the commands from your first ever build.
+I haven’t figured out a way of doing what I actually want instead yet.**
+
 The `ferhai/local-travis` Docker image is useful for running your Travis
 builds against your local version before pushing. This way if you want
 to do local testing, you don’t need to keep a separate way of making and
