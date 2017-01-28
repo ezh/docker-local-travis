@@ -4,7 +4,7 @@ set -euo pipefail
 language=$(sed -n 's/language: //p' .travis.yml)
 image=quay.io/travisci/travis-$language
 docker pull "$image"
-for i in $(seq 1 ${LOCAL_TRAVIS_MAX_BUILDS:-10})
+for i in $(seq 1 "${LOCAL_TRAVIS_MAX_BUILDS:-10}")
 do
     set +e
     travis compile "1.$i" 2>/tmp/compile-error.txt | \
