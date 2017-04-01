@@ -1,4 +1,6 @@
-# ferhai/local-travis Docker image
+# local-travis Docker image
+
+Ten thousand thanks to Fergal Hainey!
 
 **Ignore all of this. travis-build doesn’t work the way I thought it
 did, it will actually just run the commands from your first ever build.
@@ -14,9 +16,7 @@ invoking your build in sync with Travis.
 Docker is required. The following command assumes a fairly standard
 docker installation:
 
-`docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v
-$(pwd):/project -v $(pwd)/cidfile.txt:/cidfile.txt --cidfile cidfile.txt
-ferhai/local-travis ; rm cidfile.txt`
+`docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/project local-travis`
 
 This will run the builds defined in the `.travis.yml` in your current
 directory.
@@ -32,9 +32,7 @@ language specified in the `.travis.yml` file.
 
 The Docker socket must be mounted so that the container can make use of
 the host’s Docker. The current directory containing the `.travis.yml`
-file must be mounted as `/project`. The cidfile must be created and
-mounted so that the containers running the builds can share the mounted
-project from the first docker container. 
+file must be mounted as `/project`.
 
 ## Options
 
@@ -45,6 +43,7 @@ serial locally. This can be changed by passing the
 
 ## Application of license
 
+Copyright 2017 Alexey Aksenov
 Copyright 2016 Fergal Hainey
 
 Licensed under the Apache License, Version 2.0 (the "License");
