@@ -39,9 +39,13 @@ for i in $(seq $major_begin $major_end); do
         chmod a+rwx /project/.travis.sh
         docker exec -i $WORKER /project/.travis.sh
         status=$?
-        set -e
         if [ "$status" -gt 0 ]
         then
+            if [[ "x$KEEP" == "x" ]]; then
+                docker exec $WORKER touch /tmp/.exit;
+                docker stop -t 1 $WORKER;
+                docker rm $WORKER;
+            fi
             exit $status
         fi
     done
