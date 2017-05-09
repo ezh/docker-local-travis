@@ -1,6 +1,5 @@
 FROM ruby:2.3-alpine
 
-COPY run-tests.sh /run-tests.sh
 RUN apk add --no-cache bash build-base docker && \
     gem install bundler travis && \
     travis && \
@@ -8,9 +7,9 @@ RUN apk add --no-cache bash build-base docker && \
     cd travis-build && \
     ln -s `pwd` ~/.travis/travis-build && \
     bundle install --gemfile ~/.travis/travis-build/Gemfile && \
-    apk del build-base && \
-    chmod a+x /run-tests.sh
+    apk del build-base
 
+COPY run-tests.sh /run-tests.sh
 VOLUME /project
 WORKDIR /project
 ENV SHELL=/bin/bash

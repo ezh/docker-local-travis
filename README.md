@@ -1,25 +1,35 @@
 # local-travis Docker image
 
-Ten thousand thanks to Fergal Hainey!
+```
+cd travis_project
 
-**Ignore all of this. travis-build doesn’t work the way I thought it
-did, it will actually just run the commands from your first ever build.
-I haven’t figured out a way of doing what I actually want instead yet.**
+docker run --rm --net=host -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/project -e KEEP=YES travis jvm 4 4
+```
 
-The `ferhai/local-travis` Docker image is useful for running your Travis
-builds against your local version before pushing. This way if you want
-to do local testing, you don’t need to keep a separate way of making and
-invoking your build in sync with Travis.
+arguments:
+* environment - name of travis container (quay.io/travisci/travis-$1)
+* minor build number `to` (optional, default 1)
+* minor build number `from` (optional, default 1)
+* major build number `to` (optional, default 1)
+* major build number `from` (optional, default 1)
 
-## Quick start
+### Run tests with local configuration
 
-Docker is required. The following command assumes a fairly standard
-docker installation:
+Don't request Travis through API about configuration.
 
-`docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/project local-travis`
+```
+docker run --rm --net=host -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/project -e KEEP=YES travis jvm 0
+```
 
-This will run the builds defined in the `.travis.yml` in your current
-directory.
+### Run two tests with configuration from Travis.org
+
+```
+docker run --rm --net=host -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/project -e KEEP=YES travis jvm 2
+```
+
+# KEEP
+
+Keep docker container running even after test completed
 
 ## How it works
 
@@ -34,14 +44,9 @@ The Docker socket must be mounted so that the container can make use of
 the host’s Docker. The current directory containing the `.travis.yml`
 file must be mounted as `/project`.
 
-## Options
-
-By default only the first 10 builds in Travis CI’s “matrix” will be run,
-to prevent massively parallel builds taking too long as they are run in
-serial locally. This can be changed by passing the
-`LOCAL_TRAVIS_MAX_BUILDS` environment variable to the container.
-
 ## Application of license
+
+Ten thousand thanks to Fergal Hainey!
 
 Copyright 2017 Alexey Aksenov
 Copyright 2016 Fergal Hainey
